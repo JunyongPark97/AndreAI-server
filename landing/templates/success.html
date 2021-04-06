@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body>
+<!--section-->
+<div id="wrap">
+
+        <header>
+
+        <div class="wrapper">
+            <h1><a style="color:black; text-decoration-line: none; "href="/">AndreAI</a></h1>
+            <nav>
+                <ul class="menu">
+                    <li><a href="{% url "landing:home" %}">서비스 소개</a></li>
+                    <li><a style="color:black"; href="{% url "landing:select" %}">서비스 체험하기</a></li>
+                    <li><a id="call" href="http://pf.kakao.com/_MhSgK/chat">문의하기</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </header>
+
+    <div id="successSell">
+        <div id="successText">
+            무료 체험 신청이 완료되었습니다.<br>
+            작성 해 주신 메일과 번호로 <br>1시간 내로 안내 드리겠습니다.<br>
+            <br>
+            <div style="font-family: noto-regular; color: #8E8E8E; font-size: 16px">
+                *신청자가 많을 시 조금 늦어질 수 있습니다.<br>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!--footer-->
+<footer>
+    <div class="container">
+        <div class="footer-first">
+            <span style="font-size: 16px; font-family: noto-bold;">주식회사 몽데이크</span>
+            <br/>
+            <span>Copyright 2020 Mondeique. All rights reserved.</span>
+        </div>
+        <div class="footer-section">
+            <span style="font-family: noto-bold;">주소</span> 서울시 마포구 연희로 11 5층 S-541호<br/>
+            <span style="font-family: noto-bold;">대표</span> 박준용, 이상우<br/>
+            <span style="font-family: noto-bold;">사업자등록번호</span> 789-81-01945<br/>
+            <span style="font-family: noto-bold;">이메일</span> support@mondeique.com
+        </div>
+    </div>
+</footer>
+</body>
+{% endblock %}
+{% block js %}
+<script>
+
+</script>
+{% endblock %}
