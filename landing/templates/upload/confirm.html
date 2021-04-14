@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {#    <link rel="stylesheet" type="text/css" href="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/css/upload.css">#}
+    <link rel="stylesheet" type="text/css" href="/static/css/upload.css">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/async/2.0.1/async.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="total">
+    <div class="head">
+        <div id="target_image">
+            <img src="{{ object.image.url }}" height="300px">
+        </div>
+    </div>
+
+    <div class="middle">
+        {% for key, val in ordered_data.items %}
+            <div style="margin-top: 50px">
+                <h4 style="margin-top: 20px">{{ key }}</h4>
+                {% for obj in val %}
+                    <img src="{{ obj.image.url }}" height="150px">
+                {% endfor %}
+                <br>
+            </div>
+        {% endfor %}
+
+    </div>
+    <div class="bottom" style="padding-top: 150px; padding-bottom: 50px">
+
+        <a class="confirm-button" style="text-decoration: none" href="{% url 'custom_manage:confirm_done' pk=object.pk %}">확인완료</a>
+
+
+    </div>
+</div>
+</body>
+</html>

@@ -27,15 +27,17 @@ class Bundle(models.Model):
 
 class TargetImage(models.Model):
     """
-    유저가 업로드하는 모델 컷 이미지입니다.
+    유저가 업로드하는 변환 할 이미지입니다.
     """
     STATUS = [
-        (0, '착용사진'),
-        (10, '옷만 있는사진'),
+        (0, '[v1] 착용사진'),
+        (10, '[v1] 옷만 있는사진'),
+        (20, '[v2] 디테일 컷'),
         (100, 'other')
     ]
     bundle = models.ForeignKey(Bundle, on_delete=models.CASCADE, related_name='targets')
     kinds = models.IntegerField(choices=STATUS)
+    color_amount = models.PositiveIntegerField(default=1, null=True, blank=True, help_text='변환 요청한 컬러의 양 입니다.')
     image = models.FileField(upload_to=target_img_directory_path)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -44,7 +46,13 @@ class TargetImage(models.Model):
 class ReferenceImage(models.Model):
     """
     유저가 업로드하는 변환할 색상의 이미지입니다.
-    * 만약 업로드 하지 않고 RGB 값을 주거나, 대표색상으로 변환할 때는 image=Null 입니다.
+        한 이미지에 하나의 색상인 경우
+        - (1) 이전에 사용했던 디테일 컷 (테스트 목적)
+        - (2) 유저가 직접 찍은 원단의 사진 (실 사용 목적)
+        - (3) 사입하지 않고 사용 한 도매 사진 (실 사용 목적, 사입 x)
+        한 이미지에 여러 색상인 경우
+        - (1) 행거 샷
+    * 만약 업로드 하지 않고 RGB 값을 주거나(추후), 대표색상으로 변환할 때는 image=Null 입니다.
     """
     target_image = models.ForeignKey(TargetImage, on_delete=models.CASCADE, related_name="references")
     image = models.FileField(upload_to=reference_img_directory_path, null=True, blank=True)
@@ -54,8 +62,13 @@ class ReferenceImage(models.Model):
 
 
 class ResultImage(models.Model):
-    reference_image = models.ForeignKey(ReferenceImage, on_delete=models.CASCADE, related_name="results")
+    """
+    관리자가 생성하여 유저가 다운받을 수 있는 이미지입니다.
+    """
+    target_image = models.ForeignKey(TargetImage, on_delete=models.CASCADE, related_name="results")
     image = models.FileField(upload_to=result_img_directory_path)
     is_usable = models.BooleanField(default=False)
+    color_number = models.PositiveIntegerField(help_text='빨,주,노 등 색상들의 순서입니다.')
+    selected = models.BooleanField(default=False, help_text='유저가 다운로드시 True')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

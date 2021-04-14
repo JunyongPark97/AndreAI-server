@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    {#    <link rel="stylesheet" type="text/css" href="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/css/upload.css">#}
+    <link rel="stylesheet" type="text/css" href="/static/css/upload.css">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<div class="total">
+    <div class="head">
+        <div id="target_image">
+            <img src="{{ object.image.url }}" height="300px">
+            {#        <span id = "target_image_name" style="margin-right: 20px">변형할 사진</span>#}
+        </div>
+    </div>
+
+    <div class="middle">
+        <form action="" method="post" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form | crispy}} <br/>
+            <input type="submit" value="제출">
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+<script>
+
+</script>
+</html>

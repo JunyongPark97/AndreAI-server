@@ -4,7 +4,7 @@ from pictures.slack import try_slack_message
 
 
 def home(request):
-    try_slack_message("누군가가 홈페이지로 접속했습니다.")
+    # try_slack_message("누군가가 홈페이지로 접속했습니다.")
     return render(request, 'landingHome.html')
 
 

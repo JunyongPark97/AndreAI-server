@@ -23,7 +23,7 @@ SETTING_DEV_DIC = load_credential("develop")
 SECRET_KEY = SETTING_DEV_DIC['SECRET_KEY']
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.36.50.241', '.ap-northeast-2.compute.amazonaws.com', 'www.andre-ai.com', 'andre-ai.com']
+ALLOWED_HOSTS = ['3.36.156.224', '.ap-northeast-2.compute.amazonaws.com', 'www.andre-ai.com', 'andre-ai.com']
 
 
 # Application definition
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'landing',
     'storages',
     'corsheaders',
+    'custom_manage',
+    'crispy_forms'
     # 'static' ##
 ]
 
@@ -154,8 +156,8 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME, AWS_
 
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # collectstatic 할때 보는 폴더
-STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 배포해서는 이걸참고하기 때문에 static으로 바꾸고 위의라인을 주석처리
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # collectstatic 할때 보는 폴더
+STATIC_ROOT = os.path.join(BASE_DIR, 'statics') # 배포해서는 이걸참고하기 때문에 static으로 바꾸고 위의라인을 주석처리
 STATICFILES_STORAGE = 'andreai.storage.S3StaticStorage'
 
 MEDIA_URL = '/media/'
@@ -166,7 +168,6 @@ DEFAULT_FILE_STORAGE = 'andreai.storage.S3MediaStorage'
 # CORS
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = ['http://52.78.3.12:3000','http://52.78.3.12:8000','http://localhost:3000']
 
 CORS_ALLOW_METHODS = (
     'DELETE',
