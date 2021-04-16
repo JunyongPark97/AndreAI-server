@@ -38,7 +38,7 @@ class TargetImageAdmin(admin.ModelAdmin):
 
     def result(self, obj):
         if obj.results.exists():
-            return 'Done / 수정페이지와 유저가 볼 페이지 두개 만들어야함'
+            return format_html('<a href="{}" style="background-color: lightgreen">전송됨</a>', reverse("custom_manage:staff_confirm", args=(obj.pk,)))
         else:
             return format_html('<a href="{}">업로드</a>', reverse("custom_manage:staff_upload", args=(obj.pk,)))
     result.allow_tags = True

@@ -23,6 +23,7 @@ class Bundle(models.Model):
     * 추후 실제 서비스를 하게 되었을 때 모델을 추가해야 합니다. (체험의 단위를 디테일컷으로 할지? 모델컷으로 할지?)
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    allim_talk = models.BooleanField(default=False, help_text='알림톡 전송후 기록합니다. 줄복 발송을 막기 위해 사용합니다.')
 
 
 class TargetImage(models.Model):
