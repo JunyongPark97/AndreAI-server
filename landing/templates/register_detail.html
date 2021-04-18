@@ -10,6 +10,12 @@
 
             <div class="head_wrapper">
                 <h1><a style="color:black; text-decoration-line: none; "href="/">AndreAI</a></h1>
+                <nav>
+                    <ul class="menu">
+                        <li><a id="call" href="http://pf.kakao.com/_MhSgK/chat">문의하기</a></li>
+                    </ul>
+                </nav>
+
             </div>
 
         </header>
@@ -33,13 +39,15 @@
 
                         <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
                             <label class="input-file-button" for="modelCut">
-                                <img src="/static/img/new_upload_btn.png" style="width: 320px; padding-top: 32px"/>
+                                <img class = "mobile" src="/static/img/new_upload_btn.png" style="width: 280px; padding-top: 22px"/>
+                                <img class = "non-mobile" src="/static/img/new_upload_btn.png" style="width: 320px; padding-top: 32px"/>
                             </label>
                             <input type="file" id="modelCut" name="modelCut" style="display:none" accept="image/*"/>
                         </form>
 
                         <div id="info1" style="height: 21px">
-                            <img id="info_img" style="width: 260px; float: left; margin-left: 8px; padding-top: 8px" src="/static/img/new_infomation1.png"/>
+                            <img class = "mobile" id="info_img" style="width: 210px; float: left; margin-left: 8px; padding-top: 8px" src="/static/img/new_infomation1.png"/>
+                            <img class = "non-mobile" id="info_img" style="width: 260px; float: left; margin-left: 8px; padding-top: 8px" src="/static/img/new_infomation1.png"/>
                         </div>
 
                     </div>
@@ -83,13 +91,15 @@
 
                         <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
                             <label class="input-file-button" for="detailCut">
-                                <img src="/static/img/new_upload_btn.png" style="width: 320px; padding-top: 32px"/>
+                                <img class = "non-mobile" src="/static/img/new_upload_btn.png" style="width: 320px; padding-top: 32px"/>
+                                <img class = "mobile" src="/static/img/new_upload_btn.png" style="width: 280px; padding-top: 12px"/>
                             </label>
                             <input type="file" id="detailCut" name="detailCuts" style="display:none" accept="image/*" multiple/>
                         </form>
 
-                        <div id="info1" style="height: 21px">
-                            <img id="info_img" style="position: absolute; width: 392px; left: 0; margin-left: 6px; padding-top: 10px" src="/static/img/new_infomation2.png"/>
+                        <div id="info1">
+                            <img class = "non-mobile" id="info_img" style="position: absolute; width: 392px; left: 0; margin-left: 6px; padding-top: 10px" src="/static/img/new_infomation2.png"/>
+                            <img class = "mobile" id="info_img" style="position: absolute; width: 290px; left: 0; margin-left: 6px; padding-top: 10px" src="/static/img/new_infomation2.png"/>
                         </div>
 
                     </div>
@@ -103,13 +113,16 @@
                     <img class = "descriptionImg2" style="width: 608px; padding-top: 10px"  src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/new_detailRef2.png"/>
                 </div>
             </div>
-
+        <div id="register_next2_sub">
+            <img class = "mobile" src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/new_next_arrow2.png"/>
+{#            <img class = "non-mobile" src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/new_next_arrow2.png"/>#}
+        </div>
 
 
         </div>
 
-        <div id="register_next2" style="z-index: 999; position: absolute; top:1940px; left: 44%;">
-            <img class = "mobile" src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/new_next_arrow2.png"/>
+        <div id="register_next2">
+{#            <img class = "mobile" src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/new_next_arrow2.png"/>#}
             <img class = "non-mobile" src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/new_next_arrow2.png"/>
         </div>
 
@@ -125,10 +138,10 @@
                         <input id = "shopName input_default" name="shop_val" placeholder="쇼핑몰 이름을 입력해주세요*" size = "40" type = "text" />
                     </form>
 
-{#                    <p class="inputText  bold">이메일 주소</p>#}
-{#                    <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">#}
-{#                        <input id = "email input_default" name="email_val" placeholder="이메일을 입력해주세요*" size = "40" type = "text" />#}
-{#                    </form>#}
+                    {#                    <p class="inputText  bold">이메일 주소</p>#}
+                    {#                    <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">#}
+                    {#                        <input id = "email input_default" name="email_val" placeholder="이메일을 입력해주세요*" size = "40" type = "text" />#}
+                    {#                    </form>#}
 
                     <p class="inputText  bold">핸드폰 번호</p>
                     <form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
