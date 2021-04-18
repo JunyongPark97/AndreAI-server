@@ -8,6 +8,9 @@ from pictures.slack import apply_slack_message, apply_slack_message
 
 
 class TryModelCutView(GenericAPIView):
+    """
+    [DEPRECATED]
+    """
     serializer_class = None
 
     @transaction.atomic
@@ -42,12 +45,12 @@ class TryDetailCutView(GenericAPIView):
         data = request.data
         files = request.FILES
 
-        email = data.pop('email')[0]
+        # email = data.pop('email')[0]
         phone = data.pop('phone')[0]
         shop_name = data.pop('shop_name')[0]
         target_img = files.pop('target')[0]
         reference_imgs = files.pop('ref')
-        attrs = {'email': email, 'shop_name': shop_name}
+        attrs = {'shop_name': shop_name}
 
         user, _ = User.objects.get_or_create(phone=phone,
                                              defaults=attrs)

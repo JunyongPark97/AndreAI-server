@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'storages',
     'corsheaders',
     'custom_manage',
-    'crispy_forms'
+    'crispy_forms',
     # 'static' ##
 ]
 
