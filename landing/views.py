@@ -25,5 +25,3 @@ def select(request):
 
 def success(request):
     return render(request, 'success.html')
-
-

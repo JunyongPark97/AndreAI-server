@@ -46,7 +46,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'andreai.urls'
@@ -156,19 +155,36 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME, AWS_
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # collectstatic 할때 보는 폴더
-STATIC_ROOT = os.path.join(BASE_DIR, 'statics') # 배포해서는 이걸참고하기 때문에 static으로 바꾸고 위의라인을 주석처리
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # collectstatic 할때 보는 폴더
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 배포해서는 이걸참고하기 때문에 static으로 바꾸고 위의라인을 주석처리
 STATICFILES_STORAGE = 'andreai.storage.S3StaticStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = 'andreai.storage.S3MediaStorage'
 
+#
+# # boto only
+# AWS_HEADERS = {
+#     'Content-Disposition': 'attachment'
+# }
+
+# boto3 only
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'Content-Disposition': 'attachment'
+# }
+#
+
 
 # CORS
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True
-
+# CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://andre-ai.com',
+    'http://www.andre-ai.com',
+    'http://3.36.156.224',
+    'http://localhost'
+]
 CORS_ALLOW_METHODS = (
     'DELETE',
     'GET',

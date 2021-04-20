@@ -73,3 +73,8 @@ class ResultImage(models.Model):
     selected = models.BooleanField(default=False, help_text='유저가 다운로드시 True')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def image_url(self):
+        return self.image.url
+

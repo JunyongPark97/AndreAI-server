@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/css/headerFooter.css">
+  <link rel="stylesheet" type="text/css" href="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/css/download.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <meta charset="UTF-8">
+        <meta name="viewport" content=" target-densitydpi=device-dpi, width=device-width,initial-scale=1">
+
+  
+  <title>AndreAI</title>
+
+  <!--favicon-->
+  <!--bootstrap-->
+  
+</head>
+
+<body>
+<div id="download-username">
+    안녕하세요, {{user.shop_name}}님
+</div>
+<div id="imagesCon">
+
+</div>
+
+
+<script type="text/javascript">
+   var imgList ="{{result_list|safe}}";
+   console.log(imgList)
+</script>
+
+  <footer>
+        <div class="container">
+          <div class="footer-first">
+            <span style="font-size: 20px; font-family: noto-bold;">주식회사 몽데이크</span>
+            <br/>
+            <span>Copyright 2020 Mondeique. All rights reserved.</span>
+          </div>
+          <div class="footer-section">
+            <span style="font-family: noto-bold;">주소</span> 서울시 마포구 연희로 11 5층 S-541호<br/>
+            <span style="font-family: noto-bold;">대표</span> 박준용, 이상우<br/>
+            <span style="font-family: noto-bold;">사업자등록번호</span> 789-81-01945<br/>
+            <span style="font-family: noto-bold;">이메일</span> support@mondeique.com
+          </div>
+        </div>
+  </footer>
+</body>
+<script>
+  
+  let initSlick = (targetFor, targetNav, i) => {
+    const $targetFor = $(targetFor);
+    const $targetNav = $(targetNav);
+    let slickSettingFor = {
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: false,
+        lazyLoad : 'ondemand',
+      asNavFor: `.slick${i}-nav`,
+      adaptiveHeight: true
+    }
+    let slickSettingNav = {
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      asNavFor: `.slick${i}-for`,
+      dots: true,
+      centerMode: true,
+      focusOnSelect: true
+    }
+    $targetFor.slick(slickSettingFor);
+    $targetNav.slick(slickSettingNav);
+  }
+  function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {
+        type: mime
+    });
+  }
+
+  function downloadImg(imgSrc) {
+
+      var link = document.createElement('a');
+      link.href = imgSrc;
+      link.download = "result";
+      link.click();
+    }
+  // 이 imgList를 받아오면 됨 [ [a1, a2 ... a10],[b1,b2 ... ,b10]]
+  {#var imgList = [['/static/img/ex/cloth_1.jpg','/static/img/ex/cloth_2.jpg','/static/img/ex/cloth_3.jpg','/static/img/ex/cloth_4.jpg','/static/img/ex/cloth_5.jpg','/static/img/ex/cloth_6.jpg'],['/static/img/ex/cloth_5.jpg','/static/img/ex/cloth_6.jpg', '/static/img/ex/cloth_3.jpg','/static/img/ex/cloth_4.jpg']];#}
+  var imgList = {{ result_list |safe}}
+  $(document).ready(function(){
+    for(i = imgList.length - 1; i>=0; i--){
+      var $slickBox = $(`
+        <div class="slickBox slick${i}">
+        </div>
+      `)
+      var $slickSlideFor = $(`<div class="slider-for slick${i}-for" id="slick${i}-for" ></div>`)
+      var $slickSlideNav = $(`<div class="slider-nav slick${i}-nav" ></div>`)
+      
+      for(j =0; j<imgList[i].length; j++){
+        let bigImg = $(`<div><img class = 'bigImg' src="${imgList[i][j]}"/></div>`)
+        let smallImg = $(`<div class="smallCard"><img src="${imgList[i][j]}"/></div>`)
+        $slickSlideFor.append(bigImg)
+        $slickSlideNav.append(smallImg)
+      }
+      initSlick($slickSlideFor, $slickSlideNav, i)
+      var $downloadBtn = $(`
+          <div class="slick${i}-downloadBtn"  title="${i}">
+            <img src="https://andre-storages.s3.ap-northeast-2.amazonaws.com/static/img/download.png"/>
+          </div>`)
+      $slickBox.append($slickSlideFor, $slickSlideNav, $downloadBtn)
+      $("#imagesCon").prepend($slickBox)
+      $(`.slick${i}-downloadBtn`).click(function(){
+        var atet = $($(this).prev()).prev()
+        // atet.slick('slickCurrentSlide') = j
+          var indexJ = atet.slick('slickCurrentSlide')
+          var indexI = parseInt(this.title)
+        //이 밑을 바꿩
+        {#window.alert(`download ${atet.slick('slickCurrentSlide')} `)#}
+        downloadImg(imgList[indexI][indexJ])
+        /* 다운로드할때 할일 i 가 imgList[i][j] 이거 다운로드 시킴 */
+      })
+    }
+  })
+</script>
+</html>

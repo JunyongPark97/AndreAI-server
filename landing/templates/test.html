@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript">
+   var imgList ="{{result_list|safe}}";
+   console.log(imgList)
+   var str;
+    const htmlEntities = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&apos;"
+  };
+     imgList.replace(/([&<>\"'])/g, match => htmlEntities[match]);
+
+    console.log(imgList)
+</script>
+
+{% for result in result_list %}
+    {% for r in result %}
+        <a href="{{ r }}" download="ddd.png">{{r}}</a>
+        {% endfor %}
+    <h3>r ㄴㄴㅁㄴㅇ</h3>
+{% endfor %}
+</body>
+</html>

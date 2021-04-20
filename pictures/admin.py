@@ -6,7 +6,7 @@ from pictures.models import TargetImage, Bundle, ReferenceImage, ResultImage
 
 
 class TargetImageAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'kind', 'result', 'color_amount', 'target_image', 'ref_images', 'user', 'created_at']
+    list_display = ['pk', 'kind', 'result','user_result' ,'color_amount', 'target_image', 'ref_images', 'user', 'created_at']
     list_editable = ['color_amount']
     readonly_fields = ['result']
 
@@ -38,9 +38,18 @@ class TargetImageAdmin(admin.ModelAdmin):
 
     def result(self, obj):
         if obj.results.exists():
-            return format_html('<a href="{}" style="background-color: lightgreen">전송됨</a>', reverse("custom_manage:staff_confirm", args=(obj.pk,)))
+            return format_html('<a href="{}" style="background-color: lightgreen">전송됨</a>',
+                               reverse("custom_manage:staff_confirm", args=(obj.pk,)))
         else:
             return format_html('<a href="{}">업로드</a>', reverse("custom_manage:staff_upload", args=(obj.pk,)))
+    result.allow_tags = True
+
+    def user_result(self, obj):
+        if obj.results.exists():
+            url_params = 'http://andre-ai.com/download/?query={}&phone={}'.format(obj.pk, obj.bundle.user.phone)
+            return format_html('<a href="{}" style="border:2px solid:blue;">유저확인페이지</a>'.format(url_params))
+        else:
+            return '-'
     result.allow_tags = True
 
 
