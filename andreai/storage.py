@@ -1,17 +1,3 @@
-from django.conf import settings
-from storages.backends.s3boto3 import S3Boto3Storage
-import os
-from tempfile import SpooledTemporaryFile
-
-#
-# class MediaStorage(S3Boto3Storage):
-#     location = settings.MEDIA_LOCATION
-#
-#
-# class StaticStorage(S3Boto3Storage):
-#     location = settings.STATIC_LOCATION
-
-
 from storages.backends.s3boto3 import S3Boto3Storage
 
 

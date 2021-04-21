@@ -4,12 +4,9 @@ from django.views.generic import DetailView, TemplateView
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from rest_framework.views import APIView
-
 from accounts.models import User
 from pictures.models import Bundle, TargetImage, ReferenceImage, ResultImage
 from pictures.slack import apply_slack_message, apply_slack_message
-from django.http import Http404
 
 
 class TryModelCutView(GenericAPIView):
@@ -72,14 +69,8 @@ class DownloadView(DetailView):
     queryset = TargetImage.objects.all()
 
     def get(self, request, *args, **kwargs):
-        # try:
-        print(kwargs)
         phone = request.GET.get('phone', None)
         pk = request.GET.get('query', None)
-        print(phone)
-        print(pk)
-        # except Exception:
-        #     return Http404
 
         if not User.objects.filter(phone=phone).exists():
             return Response(status.HTTP_404_NOT_FOUND)
@@ -93,20 +84,14 @@ class DownloadView(DetailView):
 
         color_numbers = results.values_list('color_number', flat=True).distinct().order_by('color_number')
 
-        print(user)
-        print(color_numbers)
         result_list = []
         for color_number in color_numbers:
             result_queryset = results.filter(color_number=color_number)
             image_url_list = []
             for result in result_queryset:
-                image_url_list.append(result.image.url)
+                image_url_list.append(result.downloadable_image_url)
             result_list.append(image_url_list)
-        print('--------')
-        print(result_list)
         context = {}
         context['user'] = user
         context['result_list'] = result_list
-        print('===')
-        print(result_list)
         return render(request, 'download.html', context)

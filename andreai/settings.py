@@ -127,7 +127,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 DATABASES = {
-    'default': SETTING_DEV_DIC["default"],
+    'default': SETTING_DEV_DIC["dev"],
 }
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),

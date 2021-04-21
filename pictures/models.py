@@ -1,5 +1,19 @@
+import requests
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.conf import settings
+import boto3
+import os
+import urllib
+import random
+import string
+from io import BytesIO
+
+from storages.backends.s3boto3 import S3Boto3Storage
+
+from andreai.loader import load_credential
+from andreai.storage import DownloadableS3Boto3Storage
+SETTING_DEV_DIC = load_credential("develop")['S3']
 
 
 def target_img_directory_path(instance, filename):
@@ -67,14 +81,15 @@ class ResultImage(models.Model):
     관리자가 생성하여 유저가 다운받을 수 있는 이미지입니다.
     """
     target_image = models.ForeignKey(TargetImage, on_delete=models.CASCADE, related_name="results")
-    image = models.FileField(upload_to=result_img_directory_path)
+    image = models.FileField(null=True, blank=True, upload_to=result_img_directory_path)
     is_usable = models.BooleanField(default=False)
     color_number = models.PositiveIntegerField(help_text='빨,주,노 등 색상들의 순서입니다.')
     selected = models.BooleanField(default=False, help_text='유저가 다운로드시 True')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    downloadable_image = models.FileField(null=True, blank=True, upload_to=result_img_directory_path, storage=S3Boto3Storage())
+    downloadable_image_url = models.URLField(null=True, blank=True)
 
     @property
     def image_url(self):
         return self.image.url
-

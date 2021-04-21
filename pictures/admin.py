@@ -46,7 +46,8 @@ class TargetImageAdmin(admin.ModelAdmin):
 
     def user_result(self, obj):
         if obj.results.exists():
-            url_params = 'http://andre-ai.com/download/?query={}&phone={}'.format(obj.pk, obj.bundle.user.phone)
+            url_params = 'http://3.36.156.224:8000/download/?query={}&phone={}'.format(obj.pk, obj.bundle.user.phone)
+            # url_params = 'http://andre-ai.com/download/?query={}&phone={}'.format(obj.pk, obj.bundle.user.phone)
             return format_html('<a href="{}" style="border:2px solid:blue;">유저확인페이지</a>'.format(url_params))
         else:
             return '-'

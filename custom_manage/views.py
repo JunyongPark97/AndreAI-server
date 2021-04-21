@@ -1,12 +1,18 @@
+import uuid
+from io import BytesIO
+
+import boto3
 import requests
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView, DetailView
 from rest_framework.views import APIView
-
+from PIL import Image
+from andreai.loader import load_credential
 from custom_manage.forms import ResultImagesUploadForm, EachColorUploadForm
 from pictures.models import TargetImage, ResultImage
+SETTING_DEV_DIC = load_credential("develop")['S3']
 
 
 class StaffUploadTemplateView(DetailView):
@@ -15,6 +21,11 @@ class StaffUploadTemplateView(DetailView):
     """
     template_name = 'upload/manage.html'
     queryset = TargetImage.objects.all()
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id     = SETTING_DEV_DIC['AWS_ACCESS_KEY_ID'],
+        aws_secret_access_key = SETTING_DEV_DIC['AWS_SECRET_ACCESS_KEY']
+    )
 
     def get_context_data(self, **kwargs):
         context = super(StaffUploadTemplateView, self).get_context_data()
@@ -36,8 +47,24 @@ class StaffUploadTemplateView(DetailView):
             key = 'color_{}'.format(i)
             each_color = data.pop(key)
             for partial_color_result in each_color:
-                print(type(partial_color_result))
-                ResultImage.objects.create(target_image=target_image, image=partial_color_result, color_number=i)
+                result = ResultImage.objects.create(target_image=target_image, image=partial_color_result, color_number=i)
+                resp = requests.get(result.image_url)
+                url_generator = str(uuid.uuid4())+'.jpg'
+                t = BytesIO(resp.content)
+                # S3 upload fileobj 의 file 은 read() 가 있어야 한다. BytesIO가 read 있음. PIL 의 Image 는 read 가 없음.
+                self.s3_client.upload_fileobj(
+                    t,
+                    "andre-storages",
+                    'media/downloadable/result/'+url_generator,
+                    ExtraArgs={
+                        "ContentType": 'image/jpeg',
+                        "ContentDisposition": "attachment"
+                    }
+                )
+                image_url = "https://andre-storages.s3.ap-northeast-2.amazonaws.com/media/downloadable/result/{}".format(url_generator)
+
+                result.downloadable_image_url = image_url
+                result.save()
 
         return redirect('custom_manage:staff_confirm', pk)
 
@@ -71,6 +98,11 @@ class StaffUploadConfirmTemplateView(DetailView):
 
 
 class StaffEachColorEditDetailView(APIView):
+    s3_client = boto3.client(
+        's3',
+        aws_access_key_id     = SETTING_DEV_DIC['AWS_ACCESS_KEY_ID'],
+        aws_secret_access_key = SETTING_DEV_DIC['AWS_SECRET_ACCESS_KEY']
+    )
 
     def get(self, request, *args, **kwargs):
         """Nope"""
@@ -98,7 +130,24 @@ class StaffEachColorEditDetailView(APIView):
             before_results = ResultImage.objects.filter(target_image=target_image, color_number=pk2)
             before_results.delete()
             for image in images:
-                ResultImage.objects.create(color_number=pk2, target_image=target_image, image=image)
+                result = ResultImage.objects.create(color_number=pk2, target_image=target_image, image=image)
+                resp = requests.get(result.image_url)
+                url_generator = str(uuid.uuid4()) + '.jpg'
+                t = BytesIO(resp.content)
+                self.s3_client.upload_fileobj(
+                    t,
+                    "andre-storages",
+                    'media/downloadable/result/' + url_generator,
+                    ExtraArgs={
+                        "ContentType": 'image/jpeg',
+                        "ContentDisposition": "attachment"
+                    }
+                )
+                image_url = "https://andre-storages.s3.ap-northeast-2.amazonaws.com/media/downloadable/result/{}".format(
+                    url_generator)
+
+                result.downloadable_image_url = image_url
+                result.save()
         return redirect('custom_manage:staff_confirm', pk1)
 
 
@@ -109,5 +158,3 @@ def confirm_done(request, pk):
     bundle.allim_talk = True
     bundle.save()
     return HttpResponseRedirect('/admin/pictures/targetimage/')
-
-
